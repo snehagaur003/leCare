@@ -143,8 +143,7 @@ If valid:
 If invalid:
 
 {
-  "valid": false,
-  "reason": "Human hand detected."
+  "invalid": not a leaf
 }
 """
 
