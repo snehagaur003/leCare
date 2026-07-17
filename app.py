@@ -4,13 +4,20 @@ import datetime as dt
 import streamlit as slt
 import numpy as np
 import pandas as pd
+from google import genai
 import cv2
 from PIL import Image, ImageOps
+
+client = genai.Client(
+    api_key=slt.secrets["GEMINI_API_KEY"]
+)
+
 try:
     from tensorflow.keras.models import load_model
     TF_AVAILABLE = True
 except Exception:
     TF_AVAILABLE = False
+
 
 # ============================================================
 # PAGE CONFIG (must be first Streamlit call)
@@ -93,7 +100,65 @@ def get_treatment(predict_class: str) -> str:
         "for this specific disease."
     )
 
+def validate_leaf(pil_image):
 
+    prompt = """
+You are an image validator for a plant disease detection application.
+
+Your task is ONLY to determine whether the uploaded image is suitable for plant disease diagnosis.
+
+Accept ONLY if:
+- The image clearly contains one or more plant leaves.
+- The leaf occupies a significant portion of the image.
+- The leaf is visible enough for disease inspection.
+
+Reject if the image contains:
+- Human
+- Hand
+- Animal
+- Vehicle
+- Building
+- Phone
+- Laptop
+- Food
+- Fruit without visible leaves
+- Table
+- Keyboard
+- Screen
+- Random object
+- Empty image
+- Blurry image
+
+Respond ONLY in valid JSON.
+
+If valid:
+
+{
+  "valid": true,
+  "reason": "Plant leaf detected."
+}
+
+If invalid:
+
+{
+  "valid": false,
+  "reason": "Human hand detected."
+}
+"""
+
+    try:
+
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=[pil_image, prompt]
+        )
+
+        result = json.loads(response.text)
+
+        return result["valid"], result["reason"]
+
+    except Exception as e:
+        return False, str(e)
 # ============================================================
 # CACHED RESOURCES
 # ============================================================
@@ -372,6 +437,10 @@ elif page == "predict":
                 full_res_array = np.array(original_image)
 
                 with slt.spinner(f"Analyzing {upload_file.name}…"):
+                    valid, reason = validate_leaf(original_image)
+                    if not valid:
+                        slt.error(f"❌ {reason}")
+                        continue
                     top3 = predict_image(model, original_image)
                     predict_class, confidence = top3[0]
                     severity_percent, level, mask = get_severity(full_res_array)
