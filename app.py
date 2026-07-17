@@ -3,49 +3,9 @@ import base64
 import datetime as dt
 import streamlit as slt
 import numpy as np
-import os 
-from google import genai
 import pandas as pd
 import cv2
 from PIL import Image, ImageOps
-
-client = genai.Client(api_key=os.getenv("API_KEY"))
-def validate_leaf(image: Image.Image):
-
-    prompt = """
-                    You are validating images for a plant disease detection system.
-                    Rules:
-                    1. The image must clearly contain at least one plant leaf.
-                    2. The leaf should occupy a significant portion of the image.
-                    3. Reject humans, hands, animals, fruits, flowers, vehicles, buildings, food, phones, or any object that is not primarily a plant leaf.
-                    4. If you are not confident, answer NO.
-                    Respond ONLY with one word:
-                    YES or NO
-                    """
-
-    response = client.models.generate_content(
-        model="gemma-3n-e4b-it",
-        contents=[image, prompt]
-    )
-
-    import json
-
-    import streamlit as slt
-
-    try:
-        for model in client.models.list():
-            slt.write(model.name)
-    except Exception as e:
-        slt.error(e)
-
-from tensorflow.keras.applications.mobilenet_v2 import (
-    MobileNetV2,
-    preprocess_input,
-    decode_predictions
-)
-
-leaf_detector = MobileNetV2(weights="imagenet")
-
 try:
     from tensorflow.keras.models import load_model
     TF_AVAILABLE = True
@@ -275,7 +235,6 @@ def predict_image(model, pil_image: Image.Image):
 
     top3_idx = np.argsort(preds)[-3:][::-1]
     top3 = [(class_names[i], float(preds[i]) * 100) for i in top3_idx]
-
     return top3
 
 
@@ -385,7 +344,7 @@ elif page == "predict":
             "TensorFlow isn't available in this environment, so predictions are disabled. "
             "Install `tensorflow` to enable the model."
         )
-        
+
     model = load_my_model() if TF_AVAILABLE else None
     if TF_AVAILABLE and model is None:
         slt.error(f"Could not load the model from `{MODEL_PATH}`. Check the file path.")
@@ -413,10 +372,6 @@ elif page == "predict":
                 full_res_array = np.array(original_image)
 
                 with slt.spinner(f"Analyzing {upload_file.name}…"):
-                    valid, reason = validate_leaf(original_image)
-                    if not valid:
-                        st.error(f"❌ {reason}")
-                        st.stop()
                     top3 = predict_image(model, original_image)
                     predict_class, confidence = top3[0]
                     severity_percent, level, mask = get_severity(full_res_array)
