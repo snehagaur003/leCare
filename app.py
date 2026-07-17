@@ -31,10 +31,13 @@ def validate_leaf(image: Image.Image):
     import json
 
     try:
-        result = json.loads(response.text.strip())
-        return result["valid"], result["reason"]
-    except:
-        return False, "Unable to validate image."
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=[pil_image, prompt]
+    )
+    except Exception as e:
+        slt.error(f"Gemini Error: {e}")
+        return False, str(e)
 
 from tensorflow.keras.applications.mobilenet_v2 import (
     MobileNetV2,
