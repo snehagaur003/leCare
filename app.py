@@ -143,7 +143,8 @@ If valid:
 If invalid:
 
 {
-  "invalid": not a leaf
+  "valid": false, 
+  "reason": "not a leaf."
 }
 """
 
