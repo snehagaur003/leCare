@@ -1,0 +1,213 @@
+/* ===========================
+   FONT
+=========================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* ===========================
+   BACKGROUND
+   (image itself is injected inline by set_background() in app.py —
+    this just controls behavior + crispness)
+=========================== */
+
+.stApp {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+/* ===========================
+   TITLES
+=========================== */
+
+.main-title {
+    color: white;
+    font-size: 64px;
+    font-weight: 800;
+    line-height: 1.1;
+    text-align: left;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.35);
+    animation: fadeInUp 0.6s ease both;
+}
+
+.sub-title {
+    color: #7ED957;
+    font-size: 26px;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 16px;
+    text-align: left;
+    animation: fadeInUp 0.6s ease 0.1s both;
+}
+
+.description {
+    color: rgba(255,255,255,0.92);
+    font-size: 18px;
+    line-height: 1.7;
+    text-align: left;
+    margin-bottom: 20px;
+    animation: fadeInUp 0.6s ease 0.2s both;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===========================
+   STAT PILLS (home page)
+=========================== */
+
+.stat-pill {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: white;
+    text-align: center;
+    padding: 10px 6px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+/* ===========================
+   SEVERITY BADGES
+=========================== */
+
+.severity-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+}
+
+.badge-mild {
+    background: rgba(126, 217, 87, 0.18);
+    color: #7ED957;
+    border: 1px solid rgba(126, 217, 87, 0.4);
+}
+
+.badge-moderate {
+    background: rgba(255, 179, 71, 0.18);
+    color: #FFB347;
+    border: 1px solid rgba(255, 179, 71, 0.4);
+}
+
+.badge-severe {
+    background: rgba(255, 82, 82, 0.18);
+    color: #FF5252;
+    border: 1px solid rgba(255, 82, 82, 0.4);
+}
+
+/* ===========================
+   BUTTON
+=========================== */
+
+.stButton > button {
+    width: 100%;
+    background: #1B5E20;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 17px;
+    font-weight: 700;
+    transition: all .25s ease;
+    box-shadow: 0 4px 14px rgba(27, 94, 32, 0.35);
+}
+
+.stButton > button:hover {
+    background: #2E7D32;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(27, 94, 32, 0.45);
+}
+
+.stButton > button:active {
+    transform: translateY(0);
+}
+
+.stDownloadButton > button {
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+/* ===========================
+   FILE UPLOADER
+=========================== */
+
+.stFileUploader {
+    background: rgba(255, 255, 255, .10);
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px dashed rgba(255,255,255,0.25);
+}
+
+/* ===========================
+   SIDEBAR
+=========================== */
+
+section[data-testid="stSidebar"] {
+    background: rgba(10, 20, 12, 0.9);
+}
+
+section[data-testid="stSidebar"] * {
+    color: rgba(255,255,255,0.92);
+}
+
+/* ===========================
+   TABS
+=========================== */
+
+.stTabs [data-baseweb="tab"] {
+    font-weight: 600;
+}
+
+/* ===========================
+   SCROLLBAR
+=========================== */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(46, 125, 50, 0.6);
+    border-radius: 999px;
+}
+
+/* ===========================
+   RESPONSIVE — TABLET
+=========================== */
+
+@media (max-width: 992px) {
+    .main-title { font-size: 44px; }
+    .sub-title { font-size: 20px; }
+    .description { font-size: 16px; }
+}
+
+/* ===========================
+   RESPONSIVE — PHONE
+=========================== */
+
+@media (max-width: 600px) {
+    .main-title { font-size: 30px; }
+    .sub-title { font-size: 17px; }
+    .description { font-size: 14px; line-height: 1.5; }
+    .stButton > button { font-size: 15px; padding: 12px; }
+    .stat-pill { font-size: 11px; padding: 8px 4px; }
+}
