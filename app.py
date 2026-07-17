@@ -5,6 +5,7 @@ import streamlit as slt
 import numpy as np
 import pandas as pd
 from google import genai
+from google.genai imports types
 import json
 import cv2
 from PIL import Image, ImageOps
@@ -150,9 +151,12 @@ If invalid:
     try:
 
         response = client.models.generate_content(
-            model="gemini-3.5-flash",
-            contents=[pil_image, prompt]
+        model="gemini-3.5-flash",
+        contents=[pil_image, prompt],
+        config=types.GenerateContentConfig(
+            response_mime_type="application/json"
         )
+    )
 
         result = json.loads(response.text)
 
