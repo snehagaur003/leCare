@@ -31,10 +31,10 @@ def validate_leaf(image: Image.Image):
     import json
 
     try:
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=[pil_image, prompt]
-    )
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=[pil_image, prompt]
+        )
     except Exception as e:
         slt.error(f"Gemini Error: {e}")
         return False, str(e)
