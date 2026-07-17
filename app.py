@@ -9,7 +9,7 @@ import pandas as pd
 import cv2
 from PIL import Image, ImageOps
 
-client = genai.Client(api_key=os.getenv("AIzaSyBI_zztaKWf8R7YvmvtFurgH8sIOtwDh8A"))
+client = genai.Client(api_key=os.getenv("API_KEY"))
 def validate_leaf(image: Image.Image):
 
     prompt = """
