@@ -5,7 +5,7 @@ import streamlit as slt
 import numpy as np
 import pandas as pd
 from google import genai
-from google.genai imports types
+from google.genai import types
 import json
 import cv2
 from PIL import Image, ImageOps
