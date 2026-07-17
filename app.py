@@ -411,11 +411,11 @@ elif page == "predict":
                 full_res_array = np.array(original_image)
 
                 with slt.spinner(f"Analyzing {upload_file.name}…"):
-                    valid, reason = validate_leaf(uploaded_image)
+                    valid, reason = validate_leaf(original_image)
                     if not valid:
                         st.error(f"❌ {reason}")
                         st.stop()
-                    top3 = predict_image(model, uploaded_image)
+                    top3 = predict_image(model, original_image)
                     predict_class, confidence = top3[0]
                     severity_percent, level, mask = get_severity(full_res_array)
                     overlay_img = make_overlay(full_res_array, mask)
