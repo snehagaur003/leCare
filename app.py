@@ -102,65 +102,37 @@ def get_treatment(predict_class: str) -> str:
         "for this specific disease."
     )
 
+from google import genai
+import streamlit as slt
+
+client = genai.Client(api_key=slt.secrets["GEMINI_API_KEY"])
+
 def validate_leaf(pil_image):
 
     prompt = """
-You are an image validator for a plant disease detection application.
+Answer ONLY one word.
 
-Your task is ONLY to determine whether the uploaded image is suitable for plant disease diagnosis.
+If this image is suitable for plant disease detection reply:
 
-Accept ONLY if:
-- The image clearly contains one or more plant leaves.
-- The leaf occupies a significant portion of the image.
-- The leaf is visible enough for disease inspection.
+YES
 
-Reject if the image contains:
-- Human
-- Hand
-- Animal
-- Vehicle
-- Building
-- Phone
-- Laptop
-- Food
-- Fruit without visible leaves
-- Table
-- Keyboard
-- Screen
-- Random object
-- Empty image
-- Blurry image
+Otherwise reply:
 
-Respond ONLY in valid JSON.
-
-If valid:
-
-{
-  "valid": true,
-  "reason": "Plant leaf detected."
-}
-
-If invalid:
-
-{
-  "valid": false, 
-  "reason": "not a leaf."
-}
+NO
 """
 
     try:
-
         response = client.models.generate_content(
-        model="gemini-3.5-flash",
-        contents=[pil_image, prompt],
-        config=types.GenerateContentConfig(
-            response_mime_type="application/json"
+            model="gemini-3.5-flash",
+            contents=[pil_image, prompt]
         )
-    )
 
-        result = json.loads(response.text)
+        answer = response.text.strip().upper()
 
-        return result["valid"], result["reason"]
+        if "YES" in answer:
+            return True, "Plant leaf detected."
+
+        return False, "Please upload a clear image of a plant leaf."
 
     except Exception as e:
         return False, str(e)
