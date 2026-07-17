@@ -30,14 +30,13 @@ def validate_leaf(image: Image.Image):
 
     import json
 
+    import streamlit as slt
+
     try:
-        response = client.models.generate_content(
-            model="gemma-3n-e4b-it",
-            contents=[pil_image, prompt]
-        )
+        for model in client.models.list():
+            slt.write(model.name)
     except Exception as e:
-        slt.error(f"Gemini Error: {e}")
-        return False, str(e)
+        slt.error(e)
 
 from tensorflow.keras.applications.mobilenet_v2 import (
     MobileNetV2,
