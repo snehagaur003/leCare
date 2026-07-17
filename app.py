@@ -32,7 +32,7 @@ def validate_leaf(image: Image.Image):
 
     try:
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemma-3n-e4b-it",
             contents=[pil_image, prompt]
         )
     except Exception as e:
