@@ -6,4 +6,4 @@ pandas==3.0.3
 opencv-python-headless==4.10.0.84
 Pillow==12.2.0
 matplotlib==3.10.9
-google-genai>=1.0.0
+google-genai
